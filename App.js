@@ -10,40 +10,73 @@ import {
 } from "native-base";
 
 export default function App() {
-  let [pressed, setPressed] = useState();
-  let elementsArray = [];
+  let [number, setNumber] = useState();
+  let [numberOne, setNumberOne] = useState();
+  let [oldNumber, setOldNumber] = useState();
+  let [calculo, setCalculo] = useState();
+  let [operador, setOperador] = useState(" ");
 
   // A IMPLEMENTAR POR EL ALUMNO //
-  function handleOnPress(e) {
-    elementsArray.push(e);
+  function equalOnPress() {
+    setNumber(calculo);
+  }
 
-    let suma = 0;
-    let number1 = parseInt(elementsArray[0]);
-    let operador = elementsArray[1];
-    let number2 = parseInt(elementsArray[2]);
+  function numberOnPress(e) {
+    setNumber();
 
-    // if(e != "+" ||e != "-" ||e != "*" || e != "/") {
-    //   let join = elementsArray.join('')
-    //   alert(join)
-    // } else {
-    //   alert(e)
-    // }
+    console.log(number);
+    if (number == undefined) {
+      number = e;
+      setNumber(number);
+      oldNumber = number;
+      setOldNumber(oldNumber);
+      number = 0;
+    } else {
+      number = e;
+      let num1 = String(oldNumber);
+      let num2 = String(number);
+      let numeros = num1 + num2;
+      let numerosFloat = parseFloat(numeros);
+      setNumber(numerosFloat);
 
-    if (e == "=") {
-      if (elementsArray.length == 4 && elementsArray[1] == "+") {
-        suma = number1 + number2;
-        setPressed(suma);
-      } else if (elementsArray.length == 4 && elementsArray[1] == "x") {
-        multiplicacion = number1 * number2;
-        setPressed(multiplicacion);
-      } else if (elementsArray.length == 4 && elementsArray[1] == "-") {
-        resta = number1 - number2;
-        setPressed(resta);
-      } else if (elementsArray.length == 4 && elementsArray[1] == "/") {
-        division = number1 / number2;
-        setPressed(division);
-      }
+      numberOne = numerosFloat;
+      setNumberOne(numberOne);
     }
+  }
+
+  function signOnPress(e) {
+    let operador = e;
+    setOperador(operador);
+  }
+
+  function numeroInverso() {
+    let calculo = 1 / number;
+    setCalculo(calculo);
+  }
+
+  function factorialNumero() {
+    let calculo = 0;
+    if (number === 0 || number === 1) {
+      calculo = 1;
+    }
+    for (let i = number - 1; i >= 1; i--) {
+      calculo = number *= i;
+    }
+    setCalculo(calculo);
+  }
+
+  function raizCuadrada() {
+    let calculo = Math.sqrt(number);
+    setCalculo(calculo);
+  }
+
+  function sumar() {
+    let num1 = number;
+    console.log(num1);
+  }
+
+  function resetOnPress() {
+    setNumber();
   }
 
   //*********/
@@ -74,13 +107,13 @@ export default function App() {
               }}
             >
               <Text style={{ fontSize: 50, textAlign: "right", flex: 1 }}>
-                {pressed}
+                {number}
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("1/X")}
+                  onPress={numeroInverso}
                   size="20"
                   mt="5"
                   colorScheme="gray"
@@ -91,7 +124,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("!")}
+                  onPress={factorialNumero}
                   size="20"
                   mt="5"
                   colorScheme="gray"
@@ -102,7 +135,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("√")}
+                  onPress={raizCuadrada}
                   size="20"
                   mt="5"
                   colorScheme="gray"
@@ -113,7 +146,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("/")}
+                  onPress={() => signOnPress("/")}
                   size="20"
                   mt="5"
                   colorScheme="gray"
@@ -126,7 +159,7 @@ export default function App() {
             <View style={{ flexDirection: "row" }}>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("7")}
+                  onPress={() => numberOnPress("7")}
                   size="20"
                   mt="-1"
                   colorScheme="blue"
@@ -137,7 +170,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("8")}
+                  onPress={() => numberOnPress("8")}
                   size="20"
                   mt="-1"
                   colorScheme="blue"
@@ -148,7 +181,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("9")}
+                  onPress={() => numberOnPress("9")}
                   size="20"
                   mt="-1"
                   colorScheme="blue"
@@ -159,7 +192,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("x")}
+                  onPress={() => signOnPress("x")}
                   size="20"
                   mt="-1"
                   colorScheme="gray"
@@ -172,7 +205,7 @@ export default function App() {
             <View style={{ flexDirection: "row" }}>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("4")}
+                  onPress={() => numberOnPress("4")}
                   size="20"
                   mt="-1"
                   colorScheme="blue"
@@ -183,7 +216,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("5")}
+                  onPress={() => numberOnPress("5")}
                   size="20"
                   mt="-1"
                   colorScheme="blue"
@@ -194,7 +227,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("6")}
+                  onPress={() => numberOnPress("6")}
                   size="20"
                   mt="-1"
                   colorScheme="blue"
@@ -205,7 +238,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("-")}
+                  onPress={() => signOnPress("-")}
                   size="20"
                   mt="-1"
                   colorScheme="gray"
@@ -218,7 +251,7 @@ export default function App() {
             <View style={{ flexDirection: "row" }}>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("1")}
+                  onPress={() => numberOnPress("1")}
                   size="20"
                   mt="-1"
                   colorScheme="blue"
@@ -229,7 +262,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("2")}
+                  onPress={() => numberOnPress("2")}
                   size="20"
                   mt="-1"
                   colorScheme="blue"
@@ -240,7 +273,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("3")}
+                  onPress={() => numberOnPress("3")}
                   size="20"
                   mt="-1"
                   colorScheme="blue"
@@ -250,12 +283,7 @@ export default function App() {
                 </Button>
               </View>
               <View style={{ padding: 2 }}>
-                <Button
-                  onPress={() => handleOnPress("+")}
-                  size="20"
-                  mt="-1"
-                  colorScheme="gray"
-                >
+                <Button onPress={sumar} size="20" mt="-1" colorScheme="gray">
                   {" "}
                   +{" "}
                 </Button>
@@ -264,7 +292,7 @@ export default function App() {
             <View style={{ flexDirection: "row" }}>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("C")}
+                  onPress={resetOnPress}
                   size="20"
                   mt="-1"
                   colorScheme="gray"
@@ -275,7 +303,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("0")}
+                  onPress={() => numberOnPress("0")}
                   size="20"
                   mt="-1"
                   colorScheme="blue"
@@ -297,7 +325,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress("=")}
+                  onPress={equalOnPress}
                   size="20"
                   mt="-1"
                   colorScheme="gray"
