@@ -23,47 +23,55 @@ export default function App() {
   }
 
   function numberOnPress(e) {
-    setNumber();
-
     if (number == undefined) {
-      number = e;
-      setNumber(number);
-      oldNumber = number;
-      setOldNumber(oldNumber);
-      numberOne = oldNumber;
-      setNumberOne(numberOne);
-      console.log("oldnumber:", numberOne);
+      createNumberOne(e);
     } else {
       if (operador == undefined) {
-        number = e;
-        let num1 = String(oldNumber);
-        let num2 = String(number);
-        let numeros = num1 + num2;
-        let numerosFloat = parseFloat(numeros);
-        setNumber(numerosFloat);
-        numberOne = numerosFloat;
-        setNumberOne(numberOne);
-        console.log("handler number", numberOne);
+        createSecondDigit(e);
       } else {
-        numberTwo = e;
-        setNumber(numberTwo);
-        setNumberTwo(numberTwo);
-        console.log("Numero 2: ", numberTwo);
-
-        if (operador == "+") {
-          sumar();
-        } else if(operador == "-"){
-          console.log("hola");
-        }
-
+        createSecondNumber(e);
       }
+    }
+  }
+
+  function createNumberOne(e) {
+    number = e;
+    setNumber(number);
+    oldNumber = number;
+    setOldNumber(oldNumber);
+    numberOne = oldNumber;
+    setNumberOne(numberOne);
+  }
+
+  function createSecondDigit(e) {
+    number = e;
+    let num1 = String(oldNumber);
+    let num2 = String(number);
+    let numeros = num1 + num2;
+    let numerosFloat = parseFloat(numeros);
+    setNumber(numerosFloat);
+    numberOne = numerosFloat;
+    setNumberOne(numberOne);
+  }
+
+  function createSecondNumber(e) {
+    numberTwo = e;
+    setNumber(numberTwo);
+    setNumberTwo(numberTwo);
+    if (operador == "+") {
+      sumar();
+    } else if (operador == "-") {
+      restar();
+    } else if (operador == "x") {
+      multiplicar();
+    } else if (operador == "/") {
+      dividir();
     }
   }
 
   function signOnPress(e) {
     let operador = e;
     setOperador(operador);
-    console.log(operador);
   }
 
   function numeroInverso() {
@@ -94,17 +102,52 @@ export default function App() {
 
     if (numberTwo != undefined) {
       let num1 = parseFloat(numberOne);
-      console.log("number ONE in suma", num1);
-
       let num2 = parseFloat(numberTwo);
-      console.log("number TWO in suma", num2);
 
       suma = num1 + num2;
       setCalculo(suma);
-      console.log("Suma: " + suma);
-    } else {
-      let num1 = numberOne;
-      console.log("number ONE in suma", num1);
+    }
+  }
+
+  function restar() {
+    operador = "-";
+    setOperador(operador);
+    let resta = 0;
+
+    if (numberTwo != undefined) {
+      let num1 = parseFloat(numberOne);
+      let num2 = parseFloat(numberTwo);
+
+      resta = num1 - num2;
+      setCalculo(resta);
+    }
+  }
+
+  function multiplicar() {
+    operador = "x";
+    setOperador(operador);
+    let multiplicacion = 0;
+
+    if (numberTwo != undefined) {
+      let num1 = parseFloat(numberOne);
+      let num2 = parseFloat(numberTwo);
+
+      multiplicacion = num1 * num2;
+      setCalculo(multiplicacion);
+    }
+  }
+
+  function dividir() {
+    operador = "/";
+    setOperador(operador);
+    let division = 0;
+
+    if (numberTwo != undefined) {
+      let num1 = parseFloat(numberOne);
+      let num2 = parseFloat(numberTwo);
+
+      division = num1 / num2;
+      setCalculo(division);
     }
   }
 
@@ -188,12 +231,7 @@ export default function App() {
                 </Button>
               </View>
               <View style={{ padding: 2 }}>
-                <Button
-                  onPress={() => signOnPress("/")}
-                  size="20"
-                  mt="5"
-                  colorScheme="gray"
-                >
+                <Button onPress={dividir} size="20" mt="5" colorScheme="gray">
                   {" "}
                   /{" "}
                 </Button>
@@ -235,7 +273,7 @@ export default function App() {
               </View>
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => signOnPress("x")}
+                  onPress={multiplicar}
                   size="20"
                   mt="-1"
                   colorScheme="gray"
@@ -280,12 +318,7 @@ export default function App() {
                 </Button>
               </View>
               <View style={{ padding: 2 }}>
-                <Button
-                  onPress={() => signOnPress("-")}
-                  size="20"
-                  mt="-1"
-                  colorScheme="gray"
-                >
+                <Button onPress={restar} size="20" mt="-1" colorScheme="gray">
                   {" "}
                   -{" "}
                 </Button>
