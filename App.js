@@ -19,6 +19,7 @@ export default function App() {
 
   // A IMPLEMENTAR POR EL ALUMNO //
   function equalOnPress() {
+    calculo = calculo.toFixed(11);
     setNumber(calculo);
   }
 
