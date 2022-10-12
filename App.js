@@ -12,9 +12,10 @@ import {
 export default function App() {
   let [number, setNumber] = useState();
   let [numberOne, setNumberOne] = useState();
+  let [numberTwo, setNumberTwo] = useState();
   let [oldNumber, setOldNumber] = useState();
   let [calculo, setCalculo] = useState();
-  let [operador, setOperador] = useState(" ");
+  let [operador, setOperador] = useState();
 
   // A IMPLEMENTAR POR EL ALUMNO //
   function equalOnPress() {
@@ -24,29 +25,45 @@ export default function App() {
   function numberOnPress(e) {
     setNumber();
 
-    console.log(number);
     if (number == undefined) {
       number = e;
       setNumber(number);
       oldNumber = number;
       setOldNumber(oldNumber);
-      number = 0;
-    } else {
-      number = e;
-      let num1 = String(oldNumber);
-      let num2 = String(number);
-      let numeros = num1 + num2;
-      let numerosFloat = parseFloat(numeros);
-      setNumber(numerosFloat);
-
-      numberOne = numerosFloat;
+      numberOne = oldNumber;
       setNumberOne(numberOne);
+      console.log("oldnumber:", numberOne);
+    } else {
+      if (operador == undefined) {
+        number = e;
+        let num1 = String(oldNumber);
+        let num2 = String(number);
+        let numeros = num1 + num2;
+        let numerosFloat = parseFloat(numeros);
+        setNumber(numerosFloat);
+        numberOne = numerosFloat;
+        setNumberOne(numberOne);
+        console.log("handler number", numberOne);
+      } else {
+        numberTwo = e;
+        setNumber(numberTwo);
+        setNumberTwo(numberTwo);
+        console.log("Numero 2: ", numberTwo);
+
+        if (operador == "+") {
+          sumar();
+        } else if(operador == "-"){
+          console.log("hola");
+        }
+
+      }
     }
   }
 
   function signOnPress(e) {
     let operador = e;
     setOperador(operador);
+    console.log(operador);
   }
 
   function numeroInverso() {
@@ -71,16 +88,42 @@ export default function App() {
   }
 
   function sumar() {
-    let num1 = number;
-    console.log(num1);
+    operador = "+";
+    setOperador(operador);
+    let suma = 0;
+
+    if (numberTwo != undefined) {
+      let num1 = parseFloat(numberOne);
+      console.log("number ONE in suma", num1);
+
+      let num2 = parseFloat(numberTwo);
+      console.log("number TWO in suma", num2);
+
+      suma = num1 + num2;
+      setCalculo(suma);
+      console.log("Suma: " + suma);
+    } else {
+      let num1 = numberOne;
+      console.log("number ONE in suma", num1);
+    }
   }
 
   function resetOnPress() {
-    setNumber();
+    number = undefined;
+    setNumber(number);
+    numberOne = undefined;
+    setNumberOne(numberOne);
+    numberTwo = undefined;
+    setNumberTwo(numberTwo);
+    calculo = undefined;
+    setCalculo(calculo);
+    oldNumber = undefined;
+    setOldNumber(oldNumber);
+    operador = undefined;
+    setOperador(operador);
   }
 
   //*********/
-
   return (
     <NativeBaseProvider>
       <Center w="80%">
