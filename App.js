@@ -10,69 +10,43 @@ import {
 } from "native-base";
 
 export default function App() {
-  let [number, setNumber] = useState();
-  let [numberOne, setNumberOne] = useState();
-  let [numberTwo, setNumberTwo] = useState();
-  let [oldNumber, setOldNumber] = useState();
-  let [calculo, setCalculo] = useState();
+  let [number, setNumber] = useState("");
+  let [numberSaved, setNumberSaved] = useState(0);
+  let [calculo, setCalculo] = useState(0);
   let [operador, setOperador] = useState();
 
   // A IMPLEMENTAR POR EL ALUMNO //
   function equalOnPress() {
-    calculo = calculo.toFixed(11);
     setNumber(calculo);
   }
 
   function numberOnPress(e) {
-    if (number == undefined) {
-      createNumberOne(e);
+    let numero = "";
+    let numero2 = "";
+
+    if (operador == undefined) {
+      numero = numero + e;
+      number += numero;
+      number = number.substring(0, 11);
+      setNumber(number);
+      numberSaved = parseFloat(number);
+      setNumberSaved(numberSaved);
     } else {
-      if (operador == undefined) {
-        createSecondDigit(e);
-      } else {
-        createSecondNumber(e);
+      numero2 = numero2 += e;
+      number += numero2;
+      number = number.substring(0, 11);
+      setNumber(number);
+
+      if (operador == "+") {
+        sumar(number);
+      } else if (operador == "-") {
+        restar(number);
+      } else if (operador == "x") {
+        multiplicar(number);
+      } else if (operador == "/") {
+        dividir(number);
       }
     }
-  }
-
-  function createNumberOne(e) {
-    number = e;
-    setNumber(number);
-    oldNumber = number;
-    setOldNumber(oldNumber);
-    numberOne = oldNumber;
-    setNumberOne(numberOne);
-  }
-
-  function createSecondDigit(e) {
-    number = e;
-    let num1 = String(oldNumber);
-    let num2 = String(number);
-    let numeros = num1 + num2;
-    let numerosFloat = parseFloat(numeros);
-    setNumber(numerosFloat);
-    numberOne = numerosFloat;
-    setNumberOne(numberOne);
-  }
-
-  function createSecondNumber(e) {
-    numberTwo = e;
-    setNumber(numberTwo);
-    setNumberTwo(numberTwo);
-    if (operador == "+") {
-      sumar();
-    } else if (operador == "-") {
-      restar();
-    } else if (operador == "x") {
-      multiplicar();
-    } else if (operador == "/") {
-      dividir();
-    }
-  }
-
-  function signOnPress(e) {
-    let operador = e;
-    setOperador(operador);
   }
 
   function numeroInverso() {
@@ -96,73 +70,85 @@ export default function App() {
     setCalculo(calculo);
   }
 
-  function sumar() {
-    operador = "+";
-    setOperador(operador);
+  function sumar(e) {
     let suma = 0;
 
-    if (numberTwo != undefined) {
-      let num1 = parseFloat(numberOne);
-      let num2 = parseFloat(numberTwo);
+    if (e == "") {
+      operador = "+";
+      setOperador(operador);
 
-      suma = num1 + num2;
+      number = ""; // reset del number a "" para poder generar un número nuevo
+      setNumber(number);
+    }
+
+    if (e != "") {
+      setNumber(e);
+      number = parseFloat(number);
+      suma = numberSaved + number;
       setCalculo(suma);
     }
   }
 
-  function restar() {
-    operador = "-";
-    setOperador(operador);
+  function restar(e) {
     let resta = 0;
 
-    if (numberTwo != undefined) {
-      let num1 = parseFloat(numberOne);
-      let num2 = parseFloat(numberTwo);
+    if (e == "") {
+      operador = "-";
+      setOperador(operador);
 
-      resta = num1 - num2;
+      number = "";
+      setNumber(number);
+    }
+
+    if (e != "") {
+      setNumber(e);
+      number = parseFloat(number);
+      resta = numberSaved - number;
       setCalculo(resta);
     }
   }
 
-  function multiplicar() {
-    operador = "x";
-    setOperador(operador);
-    let multiplicacion = 0;
+  function multiplicar(e) {
+    let multiplicar = 0;
 
-    if (numberTwo != undefined) {
-      let num1 = parseFloat(numberOne);
-      let num2 = parseFloat(numberTwo);
+    if (e == "") {
+      operador = "x";
+      setOperador(operador);
 
-      multiplicacion = num1 * num2;
-      setCalculo(multiplicacion);
+      number = "";
+      setNumber(number);
+    }
+
+    if (e != "") {
+      setNumber(e);
+      number = parseFloat(number);
+      multiplicar = numberSaved * number;
+      setCalculo(multiplicar);
     }
   }
 
-  function dividir() {
-    operador = "/";
-    setOperador(operador);
-    let division = 0;
+  function dividir(e) {
+    let dividir = 0;
 
-    if (numberTwo != undefined) {
-      let num1 = parseFloat(numberOne);
-      let num2 = parseFloat(numberTwo);
+    if (e == "") {
+      operador = "/";
+      setOperador(operador);
 
-      division = num1 / num2;
-      setCalculo(division);
+      number = "";
+      setNumber(number);
+    }
+
+    if (e != "") {
+      setNumber(e);
+      number = parseFloat(number);
+      dividir = numberSaved / number;
+      setCalculo(dividir);
     }
   }
 
   function resetOnPress() {
-    number = undefined;
+    number = "";
     setNumber(number);
-    numberOne = undefined;
-    setNumberOne(numberOne);
-    numberTwo = undefined;
-    setNumberTwo(numberTwo);
-    calculo = undefined;
-    setCalculo(calculo);
-    oldNumber = undefined;
-    setOldNumber(oldNumber);
     operador = undefined;
     setOperador(operador);
   }
@@ -209,6 +195,7 @@ export default function App() {
                   1/X{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
                   onPress={factorialNumero}
@@ -220,6 +207,7 @@ export default function App() {
                   !{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
                   onPress={raizCuadrada}
@@ -231,13 +219,20 @@ export default function App() {
                   √{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
-                <Button onPress={dividir} size="20" mt="5" colorScheme="gray">
+                <Button
+                  onPress={() => dividir("")}
+                  size="20"
+                  mt="5"
+                  colorScheme="gray"
+                >
                   {" "}
                   /{" "}
                 </Button>
               </View>
             </View>
+
             <View style={{ flexDirection: "row" }}>
               <View style={{ padding: 2 }}>
                 <Button
@@ -250,6 +245,7 @@ export default function App() {
                   7{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
                   onPress={() => numberOnPress("8")}
@@ -261,6 +257,7 @@ export default function App() {
                   8{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
                   onPress={() => numberOnPress("9")}
@@ -272,9 +269,10 @@ export default function App() {
                   9{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={multiplicar}
+                  onPress={() => multiplicar("")}
                   size="20"
                   mt="-1"
                   colorScheme="gray"
@@ -284,6 +282,7 @@ export default function App() {
                 </Button>
               </View>
             </View>
+
             <View style={{ flexDirection: "row" }}>
               <View style={{ padding: 2 }}>
                 <Button
@@ -296,6 +295,7 @@ export default function App() {
                   4{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
                   onPress={() => numberOnPress("5")}
@@ -307,6 +307,7 @@ export default function App() {
                   5{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
                   onPress={() => numberOnPress("6")}
@@ -318,13 +319,20 @@ export default function App() {
                   6{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
-                <Button onPress={restar} size="20" mt="-1" colorScheme="gray">
+                <Button
+                  onPress={() => restar("")}
+                  size="20"
+                  mt="-1"
+                  colorScheme="gray"
+                >
                   {" "}
                   -{" "}
                 </Button>
               </View>
             </View>
+
             <View style={{ flexDirection: "row" }}>
               <View style={{ padding: 2 }}>
                 <Button
@@ -337,6 +345,7 @@ export default function App() {
                   1{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
                   onPress={() => numberOnPress("2")}
@@ -348,6 +357,7 @@ export default function App() {
                   2{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
                   onPress={() => numberOnPress("3")}
@@ -359,13 +369,20 @@ export default function App() {
                   3{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
-                <Button onPress={sumar} size="20" mt="-1" colorScheme="gray">
+                <Button
+                  onPress={() => sumar("")}
+                  size="20"
+                  mt="-1"
+                  colorScheme="gray"
+                >
                   {" "}
                   +{" "}
                 </Button>
               </View>
             </View>
+
             <View style={{ flexDirection: "row" }}>
               <View style={{ padding: 2 }}>
                 <Button
@@ -378,6 +395,7 @@ export default function App() {
                   C{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
                   onPress={() => numberOnPress("0")}
@@ -389,9 +407,10 @@ export default function App() {
                   0{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
-                  onPress={() => handleOnPress(",")}
+                  onPress={() => numberOnPress(".")}
                   size="20"
                   mt="-1"
                   colorScheme="gray"
@@ -400,6 +419,7 @@ export default function App() {
                   ,{" "}
                 </Button>
               </View>
+
               <View style={{ padding: 2 }}>
                 <Button
                   onPress={equalOnPress}
