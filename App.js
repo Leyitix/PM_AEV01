@@ -29,6 +29,7 @@ export default function App() {
       number += numero;
       number = number.substring(0, 11);
       setNumber(number);
+
       numberSaved = parseFloat(number);
       setNumberSaved(numberSaved);
     } else {
